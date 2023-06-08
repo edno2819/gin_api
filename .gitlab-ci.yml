@@ -1,0 +1,16 @@
+stages:
+  - compile
+  - teste
+
+build:
+  stage: compile
+  image: golang:lastest
+  script:
+    - go get -d -v
+    - go build -o bin/gin-api -v .
+
+test:
+  stage: test
+  image: golang:lastest
+  script:
+    - go test service/*.go
