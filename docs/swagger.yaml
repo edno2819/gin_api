@@ -1,19 +1,35 @@
+definitions:
+  models.User:
+    properties:
+      createdAt:
+        description: Use unix seconds as creating time
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      updatedAt:
+        description: Use unix nano seconds as updating time
+        type: integer
+    type: object
 info:
   contact: {}
 paths:
-  /one:
+  /:
     get:
-      consumes:
-      - application/json
-      description: do ping
+      description: Get all users on db. Authentification Basic is necessary
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            type: string
-      summary: ping example
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+      summary: get users
       tags:
       - example
 swagger: "2.0"

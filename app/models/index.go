@@ -13,7 +13,9 @@ func migrateModels(db *gorm.DB) {
 }
 
 func setInitialConfigs(db *gorm.DB) {
-	db.Create(&User{Name: "admin", Password: "123456"})
+	db.FirstOrCreate(&User{Name: "admin", Password: "123456"})
+	db.Create(&User{Name: "teste", Password: "1234567"})
+
 }
 
 func DatabaseConnection(config *config.Config) *gorm.DB {

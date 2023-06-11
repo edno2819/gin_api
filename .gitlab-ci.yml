@@ -7,6 +7,7 @@ build:
   image: golang:lastest
   script:
     - go get -d -v
+    - $GOPATH/bin/swag init
     - go build -o bin/gin-api -v .
 
 test:

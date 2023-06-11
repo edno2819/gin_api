@@ -5,6 +5,7 @@ import (
 	"gin_api/app/models"
 	"gin_api/app/routers"
 	"gin_api/config"
+	"gin_api/docs"
 
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -20,15 +21,18 @@ func main() {
 
 	server := gin.New()
 	server.Use(gin.Recovery(), gin.Logger())
-	server.Use(middlewares.DatabaseContext(db))
-	server.Use(middlewares.BasicAuth())
 
 	// HTML
 	server.Static("/css", "./templates/css")
 	server.LoadHTMLGlob("templates/*.html")
 
 	// Swagger /docs/index.html
+	docs.SwaggerInfo.BasePath = ""
 	server.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+
+	// Middlewares
+	server.Use(middlewares.DatabaseContext(db))
+	server.Use(middlewares.BasicAuth())
 
 	// Routers
 	routers.BasicRouters(server, "")

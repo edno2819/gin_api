@@ -4,26 +4,50 @@
         "contact": {}
     },
     "paths": {
-        "/one": {
+        "/": {
             "get": {
-                "description": "do ping",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Get all users on db. Authentification Basic is necessary",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "example"
                 ],
-                "summary": "ping example",
+                "summary": "get users",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.User"
+                            }
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.User": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "description": "Use unix seconds as creating time",
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "description": "Use unix nano seconds as updating time",
+                    "type": "integer"
                 }
             }
         }

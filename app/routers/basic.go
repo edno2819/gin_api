@@ -19,19 +19,17 @@ var (
 	loginController controller.LoginController = controller.NewLoginController(loginService, jwtService)
 )
 
-// @BasePath /
-
-// PingExample godoc
+// getUsers godoc
 // @Summary get users
 // @Schemes
-// @Description Get all users on db
+// @Description Get all users on db. Authentification Basic is necessary
 // @Tags example
 // @Produce json
-// @Success 200 {"ID":1,"Name":"admin","Password":"123456","UpdatedAt":1686484856995411384,"CreatedAt":1686484856}  AQUI
-// @Router /getUsers [get]
+// @Success 200 {array} models.User
+// @Router / [get]
 func getUsers(ctx *gin.Context) {
-	var fist_user models.User
-	ctx.MustGet("db").(*gorm.DB).First(&fist_user, "id = ?", 1)
+	var fist_user []models.User
+	ctx.MustGet("db").(*gorm.DB).Find(&fist_user)
 	ctx.JSON(http.StatusUnauthorized, fist_user)
 }
 
