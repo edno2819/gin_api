@@ -1,10 +1,27 @@
 package middlewares
 
-import "github.com/gin-gonic/gin"
+import (
+	"gin_api/models"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
+)
+
+type Accounts map[string]string
 
 func BasicAuth() gin.HandlerFunc {
-	return gin.BasicAuth((gin.Accounts{
-		"admin": "123456",
-		"pedro": "123456",
-	}))
+	return func(ctx *gin.Context) {
+		username, password, _ := ctx.Request.BasicAuth()
+
+		var user models.User
+		result := ctx.MustGet("db").(*gorm.DB).Where("Name = ? AND Password = ?", username, password).First(&user)
+
+		if result.Error != nil || result.RowsAffected == 0 {
+			ctx.Header("WWW-Authenticate", "Basic realm=Authorization Required")
+			ctx.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+		ctx.Next()
+	}
 }

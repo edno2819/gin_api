@@ -1,17 +1,15 @@
 package main
 
 import (
-	"fmt"
+	"gin_api/config"
 	"gin_api/controller"
 	"gin_api/middlewares"
+	"gin_api/models"
 	"gin_api/service"
-	"io"
 	"net/http"
-	"os"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
+	"gorm.io/gorm"
 )
 
 var (
@@ -23,38 +21,34 @@ var (
 	loginController controller.LoginController = controller.NewLoginController(loginService, jwtService)
 )
 
-var (
-	port string
-)
-
-func setupOutput() {
-	s := fmt.Sprintf("./log/log_%v.log", time.Now().Unix())
-	f, _ := os.Create(s)
-	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
-}
-
-func init() {
-	godotenv.Load(".env")
-
-	if os.Getenv("PORT") == "" {
-		port = "8080"
-	} else {
-		port = os.Getenv("PORT")
-	}
-}
+// Organizar as Rotas em um Package
+// Criar testes
+// Criar CI/CD
 
 func main() {
+	var conf *config.Config = config.GetConfig()
+	config.SetupOutputGin(conf)
 
-	setupOutput()
+	db := models.DatabaseConnection(conf)
 
 	server := gin.New()
 	server.Use(gin.Recovery(), gin.Logger())
+	server.Use(middlewares.DatabaseContext(db))
+	server.Use(middlewares.BasicAuth())
 
 	server.Static("/css", "./templates/css")
 	server.LoadHTMLGlob("templates/*.html")
 
 	// Login Endpoint: Authentication + Token creation
-	server.POST("/login", func(ctx *gin.Context) {
+	server.GET("/", func(ctx *gin.Context) {
+		var fist_user models.User
+		ctx.MustGet("db").(*gorm.DB).First(&fist_user, "id = ?", 1)
+		ctx.JSON(http.StatusUnauthorized, fist_user)
+
+	})
+
+	// Login Endpoint: Authentication + Token creation
+	server.POST("/getToken", func(ctx *gin.Context) {
 		token := loginController.Login(ctx)
 		if token != "" {
 			ctx.JSON(http.StatusOK, gin.H{
@@ -65,7 +59,7 @@ func main() {
 		}
 	})
 
-	apiRoutes := server.Group("/api", middlewares.AuthorizeJWT())
+	apiRoutes := server.Group("/api")
 	{
 		apiRoutes.GET("/videos", func(ctx *gin.Context) {
 			ctx.JSON(200, videoController.FindAll)
@@ -87,5 +81,5 @@ func main() {
 
 	}
 
-	server.Run(":" + port)
+	server.Run(":" + conf.Port)
 }
