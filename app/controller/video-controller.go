@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"gin_api/entity"
-	"gin_api/service"
-	"gin_api/validators"
+	"gin_api/app/models"
+	"gin_api/app/service"
+	"gin_api/app/validators"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -19,8 +19,8 @@ func init() {
 }
 
 type VideoController interface {
-	FindAll() []entity.Video
-	Save(ctx *gin.Context) (error, entity.Video)
+	FindAll() []models.Video
+	Save(ctx *gin.Context) (error, models.Video)
 	ShowAll(ctx *gin.Context)
 }
 
@@ -28,8 +28,8 @@ type controller struct {
 	service service.VideoService
 }
 
-func (c *controller) Save(ctx *gin.Context) (error, entity.Video) {
-	var video entity.Video
+func (c *controller) Save(ctx *gin.Context) (error, models.Video) {
+	var video models.Video
 	err := ctx.ShouldBindJSON(&video)
 	if err != nil {
 		return err, video
@@ -42,7 +42,7 @@ func (c *controller) Save(ctx *gin.Context) (error, entity.Video) {
 	return nil, video
 }
 
-func (c *controller) FindAll() []entity.Video {
+func (c *controller) FindAll() []models.Video {
 	return c.service.FindAll()
 }
 

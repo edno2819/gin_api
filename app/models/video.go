@@ -1,4 +1,4 @@
-package entity
+package models
 
 type Person struct {
 	FirstName string `json:"firstname"`

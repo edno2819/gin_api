@@ -1,4 +1,4 @@
-package dto
+package controller
 
 type Credentials struct {
 	Username string `form:"username"`

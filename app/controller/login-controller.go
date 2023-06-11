@@ -1,8 +1,7 @@
 package controller
 
 import (
-	"gin_api/dto"
-	"gin_api/service"
+	"gin_api/app/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,7 +24,7 @@ func NewLoginController(loginService service.LoginService,
 }
 
 func (controller *loginController) Login(ctx *gin.Context) string {
-	var credentials dto.Credentials
+	var credentials Credentials
 	err := ctx.ShouldBind(&credentials)
 	if err != nil {
 		return ""

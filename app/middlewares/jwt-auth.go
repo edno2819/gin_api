@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"gin_api/service"
+	"gin_api/app/service"
 	"log"
 	"net/http"
 

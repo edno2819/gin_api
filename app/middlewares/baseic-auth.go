@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"gin_api/models"
+	"gin_api/app/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
