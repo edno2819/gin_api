@@ -6,6 +6,9 @@ import (
 	"gin_api/app/routers"
 	"gin_api/config"
 
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,8 +23,12 @@ func main() {
 	server.Use(middlewares.DatabaseContext(db))
 	server.Use(middlewares.BasicAuth())
 
+	// HTML
 	server.Static("/css", "./templates/css")
 	server.LoadHTMLGlob("templates/*.html")
+
+	// Swagger /docs/index.html
+	server.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	// Routers
 	routers.BasicRouters(server, "")
