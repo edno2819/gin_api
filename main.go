@@ -37,6 +37,7 @@ func main() {
 	// Routers
 	routers.BasicRouters(server, "")
 	routers.APIRouters(server, "api")
+	routers.VideoRoute(server, "video")
 
 	server.Run(":" + conf.Port)
 }

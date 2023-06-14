@@ -10,6 +10,7 @@ import (
 
 func migrateModels(db *gorm.DB) {
 	db.AutoMigrate(&User{})
+	db.AutoMigrate(&Video{})
 }
 
 func setInitialConfigs(db *gorm.DB) {

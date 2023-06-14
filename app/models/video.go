@@ -1,11 +1,10 @@
 package models
 
-type Person struct {
-	FirstName string `json:"firstname"`
-}
-
 type Video struct {
-	Title       string `json:"title" xml:"title" binding:"min=2,max=10" validate:"is-cool"`
-	Description string `json:"description" validate:"is-cool"`
-	URL         string `json:"ulr"`
+	ID          uint   `gorm:"primaryKey;autoIncrement"`
+	Title       string `gorm:"not null;unique" json:"title" `
+	Description string `json:"description"`
+	URL         string `gorm:"not null;unique" json:"url"`
+	CreatedAt   int64  `gorm:"autoCreateTime"` // Use unix seconds as creating time
+
 }

@@ -14,6 +14,20 @@ definitions:
         description: Use unix nano seconds as updating time
         type: integer
     type: object
+  models.Video:
+    properties:
+      createdAt:
+        description: Use unix seconds as creating time
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+      url:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -30,6 +44,33 @@ paths:
               $ref: '#/definitions/models.User'
             type: array
       summary: get users
+      tags:
+      - example
+  /video:
+    get:
+      description: Get all Videos on db. Authentification Basic is necessary
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Video'
+            type: array
+      summary: get Videos
+      tags:
+      - example
+    post:
+      description: add video in database.
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/models.Video'
+      summary: add Video
       tags:
       - example
 swagger: "2.0"

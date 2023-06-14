@@ -38,6 +38,47 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/video": {
+            "get": {
+                "description": "Get all Videos on db. Authentification Basic is necessary",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "get Videos",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Video"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "add video in database.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "add Video",
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/models.Video"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -60,6 +101,27 @@ const docTemplate = `{
                 "updatedAt": {
                     "description": "Use unix nano seconds as updating time",
                     "type": "integer"
+                }
+            }
+        },
+        "models.Video": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "description": "Use unix seconds as creating time",
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
                 }
             }
         }

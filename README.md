@@ -25,6 +25,5 @@ A RESTful API Base em GO with Gin
 - [ ] Make convenient wrappers for creating API handlers.
 - [ ] Write the tests for all APIs.
 - [x] Organize the code with packages
-- [ ] Make docs with GoDoc
 - [ ] Building a deployment process 
 - [ ] CI/CD
