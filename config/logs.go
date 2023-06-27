@@ -15,3 +15,10 @@ func SetupOutputGin(config *Config) {
 	f, _ := os.Create(s)
 	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 }
+
+func SetupOutputGinTest(config *Config) {
+	log_path := fmt.Sprintf("%s/log_test_%v.log", config.LogPath, time.Now().Unix())
+	s := fmt.Sprintf(log_path)
+	f, _ := os.Create(s)
+	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+}

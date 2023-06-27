@@ -19,7 +19,7 @@ import (
 // @Router /video [post]
 func postVideo(ctx *gin.Context) {
 	var video models.Video
-	err := ctx.ShouldBind(&video)
+	err := ctx.ShouldBindJSON(&video)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"status": "Campos inválidos", "error": err.Error()})
 		return

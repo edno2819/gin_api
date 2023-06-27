@@ -27,3 +27,7 @@ A RESTful API Base em GO with Gin
 - [x] Organize the code with packages
 - [ ] Building a deployment process 
 - [ ] CI/CD
+
+
+
+* Instalei as de

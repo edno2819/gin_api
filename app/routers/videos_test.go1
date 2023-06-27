@@ -1,0 +1,36 @@
+package routers
+
+import (
+	"bytes"
+	"encoding/json"
+	"gin_api/app/models"
+	"gin_api/app/teste"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestPostVideo(t *testing.T) {
+	router := teste.Server
+
+	video := models.Video{Title: "test", Description: "sfddsfsd", URL: "SDFSDFSD"}
+	jsonData, _ := json.Marshal(video)
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("POST", "/video", bytes.NewBuffer(jsonData))
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusCreated, w.Code)
+}
+
+func TestGetVideos(t *testing.T) {
+	router := teste.Server
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/video", nil)
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusAccepted, w.Code)
+	// Outras verificações aqui
+}

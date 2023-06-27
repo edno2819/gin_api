@@ -8,12 +8,16 @@ import (
 	"gorm.io/gorm"
 )
 
-func migrateModels(db *gorm.DB) {
+var (
+	DB *gorm.DB
+)
+
+func MigrateModels(db *gorm.DB) {
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Video{})
 }
 
-func setInitialConfigs(db *gorm.DB) {
+func SetInitialConfigs(db *gorm.DB) {
 	db.FirstOrCreate(&User{Name: "admin", Password: "123456"})
 	db.Create(&User{Name: "teste", Password: "1234567"})
 
@@ -21,11 +25,11 @@ func setInitialConfigs(db *gorm.DB) {
 
 func DatabaseConnection(config *config.Config) *gorm.DB {
 	dbname := fmt.Sprintf("%v.db", config.DbName)
-	db, err := gorm.Open(sqlite.Open(dbname), &gorm.Config{})
+	DB, err := gorm.Open(sqlite.Open(dbname), &gorm.Config{})
 	if err != nil {
 		panic("Erro ao conectar ao banco de dados: " + err.Error())
 	}
-	migrateModels(db)
-	setInitialConfigs(db)
-	return db
+	MigrateModels(DB)
+	SetInitialConfigs(DB)
+	return DB
 }
